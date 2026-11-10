@@ -39,6 +39,8 @@ df.loc[df.status == "Em andamento", ["resolucao", "horas_resolucao"]] = [pd.NaT,
 df["dentro_sla"] = np.where(df.status == "Resolvido", df.horas_resolucao <= df.sla_horas, pd.NA)
 df["dias_sem_atualizacao"] = np.where(df.status == "Em andamento", rng.integers(0, 9, n), 0)
 df = df.sort_values("abertura")
+for c in ["abertura","resolucao"]:
+    df[c] = df[c].dt.strftime("%Y-%m-%d %H:%M:%S")
 df.to_csv("dados/chamados.csv", index=False, encoding="utf-8-sig")
 tecnicos.to_csv("dados/tecnicos.csv", index=False, encoding="utf-8-sig")
 cal = pd.DataFrame({"data": pd.date_range("2026-01-01", "2026-12-31")})
